@@ -28,9 +28,10 @@ int handle_select(s_client** clients_list_all)
     fd_set              writefs;
 
     //Announcing Starting Game
-    for (i = 0; i < BACKLOG - 1; i++)
+    for (i = 0; i < BACKLOG; i++)
     {
-      if(write(clients_list_all[i]->fd, "start", my_strlen("start")) < 0)
+      my_printf("i = %d", i);
+      if (write(clients_list_all[i]->fd, "start", my_strlen("start")) < 0)
       {
         my_printf("send()");
         exit(errno);
@@ -45,11 +46,11 @@ int handle_select(s_client** clients_list_all)
       // tv.tv_usec = 500000;
       FD_ZERO(&readfs);
       FD_ZERO(&writefs);
-      for (i = 0; i < BACKLOG - 1; i++)
+      for (i = 0; i < BACKLOG; i++)
       {
         FD_SET(clients_list_all[i]->fd, &readfs);
       }
-      for (i = 0; i < BACKLOG - 1; i++)
+      for (i = 0; i < BACKLOG; i++)
       {
         FD_SET(clients_list_all[i]->fd, &writefs);
       }
@@ -60,58 +61,24 @@ int handle_select(s_client** clients_list_all)
         my_printf("TIMEOUT!\n");
         result = 1;
       }
-      if (FD_ISSET(clients_list_all[0]->fd, &readfs))
+      for (i = 0; i < BACKLOG; i++)
       {
-        //Read Command from client
-        pthread_mutex_lock(&(clients_list_all[0]->mutex));
-        my_printf("HANDLE SELECT READ OK\n");
-        pthread_create(&(threads_client[0]), NULL, (void*)handle_read_command, (void *)clients_list_all[0]);
-        FD_CLR(clients_list_all[0]->fd, &readfs);
-      }
-      if (FD_ISSET(clients_list_all[0]->fd, &writefs))
-      {
-        // my_printf("HOST 1 Writing detected\n");
-        FD_CLR(clients_list_all[0]->fd, &writefs);
-      }
-      if (FD_ISSET(clients_list_all[1]->fd, &readfs))
-      {
-        pthread_mutex_lock(&(clients_list_all[1]->mutex));
-        my_printf("HANDLE SELECT READ OK\n");
-        pthread_create(&(threads_client[1]), NULL,(void*)handle_read_command, (void *)clients_list_all[1]);
-        FD_CLR(clients_list_all[1]->fd, &readfs);
-      }
-      if (FD_ISSET(clients_list_all[1]->fd, &writefs))
-      {
-        // my_printf("HOST 2 Writing detected\n");
-        FD_CLR(clients_list_all[1]->fd, &writefs);
-      }
-      if (FD_ISSET(clients_list_all[2]->fd, &readfs))
-      {
-        pthread_mutex_lock(&(clients_list_all[2]->mutex));
-        my_printf("HANDLE SELECT READ OK\n");
-        pthread_create(&(threads_client[2]), NULL,(void*)handle_read_command, (void *)clients_list_all[2]);
-        FD_CLR(clients_list_all[2]->fd, &readfs);
-      }
-      if (FD_ISSET(clients_list_all[2]->fd, &writefs))
-      {
-        // my_printf("HOST 3 Writing detected\n");
-        FD_CLR(clients_list_all[2]->fd, &writefs);
-      }
-      if (FD_ISSET(clients_list_all[3]->fd, &readfs))
-      {
-        pthread_mutex_lock(&(clients_list_all[3]->mutex));
-        my_printf("HANDLE SELECT READ OK\n");
-        pthread_create(&(threads_client[3]), NULL,(void*)handle_read_command, (void *)clients_list_all[3]);
-        FD_CLR(clients_list_all[3]->fd, &readfs);
-      }
-      if (FD_ISSET(clients_list_all[3]->fd, &writefs))
-      {
-        // my_printf("HOST 4 Writing detected\n");
-        FD_CLR(clients_list_all[3]->fd, &writefs);
+        if (FD_ISSET(clients_list_all[i]->fd, &readfs))
+        {
+          //Read Command from client
+          pthread_mutex_lock(&(clients_list_all[i]->mutex));
+          my_printf("HANDLE SELECT READ OK\n");
+          pthread_create(&(threads_client[i]), NULL, (void*)handle_read_command, (void *)clients_list_all[i]);
+          FD_CLR(clients_list_all[i]->fd, &readfs);
+        }
+        if (FD_ISSET(clients_list_all[i]->fd, &writefs))
+        {
+          FD_CLR(clients_list_all[i]->fd, &writefs);
+        }
       }
       if (FD_ISSET(0, &readfs))
       {
-        for (i = 0; i < 5; i++)
+        for (i = 0; i < BACKLOG; i++)
           close(clients_list_all[i]->fd);
         close(list_chain->server_info->listener);
         deleteAllChain();

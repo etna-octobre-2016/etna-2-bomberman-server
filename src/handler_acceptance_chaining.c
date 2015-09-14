@@ -23,25 +23,15 @@ void handler_acceptance_chaining(int listener)
     struct sockaddr_in* cli_addr;
     socklen_t           socklen;
     s_client**          clients;
-    pthread_t           threads[4];
-    s_acceptance_data*  s_data;
     int                 i;
-    char*               array_name[4] = {"1","2","3","4"};
-    int                 return_error;
-    pthread_mutex_t     mutex = PTHREAD_MUTEX_INITIALIZER;
+    char*               array_name[5] = {"1","2","3","4","5"};
 
 
     socklen = sizeof(cli_addr);
     cli_addr = malloc(sizeof(struct sockaddr_in*));
-    s_data = malloc(sizeof(s_acceptance_data));
     clients = malloc(4 * sizeof(s_client));
-    s_data->listener = listener;
-    s_data->cli_addr = cli_addr;
-    s_data->mutex = &mutex;
-    s_data->socklen = socklen;
     for(i = 0; i < BACKLOG; i++)
     {
-      pthread_mutex_lock(&mutex);
       if (i != 0)
       {
         clients[i] = add_client(my_strconcat("client_", array_name[i]));
@@ -51,14 +41,11 @@ void handler_acceptance_chaining(int listener)
         client_chain_handler_init("client_1");
         clients[i] = list_chain->first;
       }
-      //create threads
-      s_data->client = clients[i];
-      return_error = pthread_create(&(threads[i]), NULL, thread_acceptance, (void *)s_data);
-      if (return_error != 0)
-      {
-        perror("pthread_create");
-      }
+      pthread_mutex_init(&(clients[i]->mutex), NULL);
+      clients[i]->fd = accept(listener, (struct sockaddr *)cli_addr, &socklen);
+      my_printf("Host->name : %s\n", clients[i]->name);
+      write(clients[i]->fd, my_strconcat("Hej!", clients[i]->name), my_strlen(my_strconcat("Hej!", clients[i]->name)));
+      write(clients[i]->fd, "\n", my_strlen("\n"));
     }
-    if (pthread_mutex_trylock(&mutex) != 0)
-      add_clients_list(clients);
+    list_chain->clients_list = clients;
   }

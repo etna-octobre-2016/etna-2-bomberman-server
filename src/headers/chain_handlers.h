@@ -12,7 +12,9 @@ typedef struct            s_client
 {
   char*             name;
   int               fd;
-  int               action_available;
+  int               pos_x;
+  int               pos_y;
+  int               state_bomb;
   pthread_mutex_t   mutex;
   struct s_client*  next;
 }                   s_client;

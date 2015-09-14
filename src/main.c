@@ -12,12 +12,10 @@
 
 int main()
 {
-  s_client**          clients_list_all;
-
   init_server();
-  clients_list_all = list_chain->clients_list;
+  //TODO Handle map
   //PARSE SELECT + THREAD
-  handle_select(clients_list_all);
-  free(clients_list_all);
+  handle_select(list_chain->clients_list);
+  free(list_chain->clients_list);
   return (0);
 }
