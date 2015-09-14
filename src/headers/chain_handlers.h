@@ -11,9 +11,9 @@
 typedef struct            s_client
 {
   char*             name;
+  int               map_id;
   int               fd;
-  int               pos_x;
-  int               pos_y;
+  int               position;
   int               state_bomb;
   pthread_mutex_t   mutex;
   struct s_client*  next;
