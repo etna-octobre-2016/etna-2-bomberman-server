@@ -17,8 +17,8 @@ void init_map()
   s_client** clients;
   int i;
   int u;
+  int row;
   int ratio_place_player;
-  int buffer_u;
 
   clients = list_chain->clients_list;
   if ((map = malloc(MAP_SIZE * sizeof(map))) == NULL)
@@ -47,9 +47,33 @@ void init_map()
       clients[i]->position = clients[1]->position + ratio_place_player;
     }
   }
+  //Write Border + Player spawn
+  backboning_map();
+  //TODO create scenery
+  setting_map();
+  for(i = 0; i < u; i++)
+  {
+    for(row = i; row < (u * (u)); row += u)
+    {
+      my_printf(" %d ", map[row]);
+    }
+    my_printf("\n");
+  }
+}
+
+void backboning_map()
+{
+  s_client** clients;
+  int i;
+  int u;
+  int buffer_u;
+
+  clients = list_chain->clients_list;
+  u = sqrt(MAP_SIZE);
+
   for(i = 0; i <= u; i++)
   {
-    map[i] = '\0';
+    map[i] = SYMBOL_WALL_INDESTRUCTIBLE;
   }
   buffer_u = u;
   u += u;
@@ -57,7 +81,7 @@ void init_map()
   {
     if ((i == u) || (i == (u - 1)))
     {
-      map[i] = '\0';
+      map[i] = SYMBOL_WALL_INDESTRUCTIBLE;
       if (i == u)
       {
         u += buffer_u;
@@ -65,12 +89,12 @@ void init_map()
     }
     else
     {
-      map[i] = 9;
+      map[i] = SYMBOL_VOID;
     }
   }
   for(; i < MAP_SIZE; i++)
   {
-    map[i] = '\0';
+    map[i] = SYMBOL_WALL_INDESTRUCTIBLE;
   }
   for(i = 0; i < MAP_SIZE; i++)
   {
@@ -82,9 +106,26 @@ void init_map()
       }
     }
   }
+}
 
-  for(i = 0; i < MAP_SIZE; i++)
+void setting_map()
+{
+  int i;
+  int u;
+
+  for(i = 0, u = 0; i < MAP_SIZE; i++)
   {
-    my_printf("map[%d] = %d", i, map[i]);
+    if (map[i] == SYMBOL_VOID)
+    {
+      if (u <= 2)
+      {
+        map[i] = SYMBOL_WALL_DESTRUCTIBLE;
+        u++;
+      }
+      else
+      {
+        u = 0;
+      }
+    }
   }
 }
