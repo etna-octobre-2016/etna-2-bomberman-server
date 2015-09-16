@@ -18,7 +18,6 @@ void init_map()
   int i;
   int u;
   int row;
-  int ratio_place_player;
 
   clients = list_chain->clients_list;
   if ((map = malloc(MAP_SIZE * sizeof(map))) == NULL)
@@ -26,7 +25,6 @@ void init_map()
     exit(1);
   }
   u = sqrt(MAP_SIZE);
-  ratio_place_player = u / 2;
   //init border
   for(i = 0; i < 4; i++)
   {
@@ -36,15 +34,15 @@ void init_map()
     }
     if (i == 1)
     {
-      clients[i]->position = clients[i - 1]->position + (ratio_place_player * u);
+      clients[i]->position = clients[i - 1]->position + ((u - 3) * u);
     }
     if (i == 2)
     {
-      clients[i]->position = clients[0]->position + ratio_place_player;
+      clients[i]->position = clients[0]->position + (u - 3);
     }
     if (i == 3)
     {
-      clients[i]->position = clients[1]->position + ratio_place_player;
+      clients[i]->position = (MAP_SIZE - 1) - (u + 1);
     }
   }
   //Write Border + Player spawn
@@ -115,17 +113,33 @@ void setting_map()
 
   for(i = 0, u = 0; i < MAP_SIZE; i++)
   {
-    if (map[i] == SYMBOL_VOID)
+    if ((map[i] == SYMBOL_VOID) && (control_player_presence(i - 1) == 0))
     {
-      if (u <= 2)
+      if (u == 2)
       {
         map[i] = SYMBOL_WALL_DESTRUCTIBLE;
-        u++;
+        u = 0;
       }
       else
       {
-        u = 0;
+        u++;
       }
     }
   }
+}
+
+int control_player_presence(int map_id)
+{
+  s_client* client;
+
+  client = list_chain->first;
+  while(client != NULL)
+  {
+    if (client->position == map_id)
+    {
+      return (1);
+    }
+    client = client->next;
+  }
+  return (0);
 }
