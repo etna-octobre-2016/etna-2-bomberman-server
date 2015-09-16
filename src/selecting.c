@@ -22,7 +22,7 @@ int handle_select(s_client** clients_list_all)
     int                 result;
     // struct timeval      tv;
     int                 i;
-    pthread_t           threads_client[4];
+    pthread_t           threads_client[BACKLOG];
     pthread_t           thread_time;
     fd_set              readfs;
     fd_set              writefs;

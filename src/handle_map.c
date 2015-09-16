@@ -2,6 +2,7 @@
 #include "./headers/chain_handlers.h"
 #include "./headers/main.h"
 #include "./headers/handle_map.h"
+#include "./headers/init_server.h"
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
@@ -26,7 +27,7 @@ void init_map()
   }
   u = sqrt(MAP_SIZE);
   //init border
-  for(i = 0; i < 4; i++)
+  for(i = 0; i < BACKLOG; i++)
   {
     if (i == 0)
     {
@@ -96,7 +97,7 @@ void backboning_map()
   }
   for(i = 0; i < MAP_SIZE; i++)
   {
-    for(u = 0; u < 4; u++)
+    for(u = 0; u < BACKLOG; u++)
     {
       if (clients[u]->position == i)
       {
