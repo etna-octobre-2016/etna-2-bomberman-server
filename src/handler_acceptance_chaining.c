@@ -24,7 +24,7 @@ void handler_acceptance_chaining(int listener)
     socklen_t           socklen;
     s_client**          clients;
     int                 i;
-    char*               array_name[5] = {"1","2","3","4","5"};
+    int                 array_name[4] = {2, 4, 6, 8};
 
 
     socklen = sizeof(cli_addr);
@@ -40,17 +40,19 @@ void handler_acceptance_chaining(int listener)
     {
       if (i != 0)
       {
-        clients[i] = add_client(my_strconcat("client_", array_name[i]));
+        clients[i] = add_client();
+        clients[i]->map_id = array_name[i];
       }
       else
       {
-        client_chain_handler_init("client_1");
+        client_chain_handler_init();
         clients[i] = list_chain->first;
+        clients[i]->map_id = array_name[i];
       }
       pthread_mutex_init(&(clients[i]->mutex), NULL);
       clients[i]->fd = accept(listener, (struct sockaddr *)cli_addr, &socklen);
-      my_printf("Host->name : %s\n", clients[i]->name);
-      write(clients[i]->fd, my_strconcat("Hej!", clients[i]->name), my_strlen(my_strconcat("Hej!", clients[i]->name)));
+      my_printf("Host->name : %d\n", clients[i]->map_id);
+      // write(clients[i]->fd, clients[i]->map_id, sizeof(int));
       write(clients[i]->fd, "\n", my_strlen("\n"));
     }
     list_chain->clients_list = clients;

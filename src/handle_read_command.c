@@ -12,10 +12,11 @@
 
 t_listFunc structList[] =
   {
-    {"forward", function_forward},
-    {"backward", function_backward},
+    {"up", function_up},
+    {"down", function_down},
     {"left", function_left},
     {"right", function_right},
+    {"bomb", function_bomb},
     {0,0}
   };
 
@@ -46,13 +47,13 @@ void* handle_read_command(s_client* client)
   pthread_exit(NULL);
 }
 
-void function_forward(s_client* client)
+void function_up(s_client* client)
 {
   my_printf("OK\n");
   write(client->fd, "ok\n", my_strlen("ok\n"));
   pthread_mutex_unlock(&(client->mutex));
 }
-void function_backward(s_client* client)
+void function_down(s_client* client)
 {
   my_printf("OK\n");
   write(client->fd, "ok\n", my_strlen("ok\n"));
@@ -65,6 +66,12 @@ void function_left(s_client* client)
   pthread_mutex_unlock(&(client->mutex));
 }
 void function_right(s_client* client)
+{
+  my_printf("OK\n");
+  write(client->fd, "ok\n", my_strlen("ok\n"));
+  pthread_mutex_unlock(&(client->mutex));
+}
+void function_bomb(s_client* client)
 {
   my_printf("OK\n");
   write(client->fd, "ok\n", my_strlen("ok\n"));

@@ -143,3 +143,12 @@ int control_player_presence(int map_id)
   }
   return (0);
 }
+
+int control_wall_presence(int map_id)
+{
+  if ((map[map_id] == SYMBOL_WALL_INDESTRUCTIBLE) || (map[map_id] == SYMBOL_WALL_DESTRUCTIBLE) || (map[map_id] == SYMBOL_BOMB_IDLE))
+  {
+    return (1);
+  }
+  return (0);
+}

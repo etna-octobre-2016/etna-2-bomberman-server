@@ -13,7 +13,7 @@
 #include <stdlib.h>
 #include <errno.h>
 
-void          client_chain_handler_init(char* client_name)
+void          client_chain_handler_init()
 {
   s_client*     client;
 
@@ -23,20 +23,14 @@ void          client_chain_handler_init(char* client_name)
   {
     exit(-1);
   }
-  client->name = client_name;
-  //generate random map_id
-  client->map_id = rand() % (200 - 100) + 100;
   list_chain->first = client;
 }
 
-s_client*     add_client(char* client_name)
+s_client*     add_client()
 {
   s_client*     client;
 
   client = malloc(sizeof(s_client));
-  client->name = client_name;
-  //generate random map_id
-  client->map_id = rand() % (200 - 100) + 100;
   client->next = NULL;
   list_chain->first->next = client;
   return (client);
