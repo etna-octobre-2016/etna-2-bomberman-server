@@ -28,8 +28,14 @@ void handler_acceptance_chaining(int listener)
 
 
     socklen = sizeof(cli_addr);
-    cli_addr = malloc(sizeof(struct sockaddr_in*));
-    clients = malloc(4 * sizeof(s_client));
+    if ((cli_addr = malloc(sizeof(struct sockaddr_in*))) == NULL)
+    {
+      exit(EXIT_FAILURE);
+    }
+    if((clients = malloc(4 * sizeof(s_client))) == NULL)
+    {
+      exit(EXIT_FAILURE);
+    }
     for(i = 0; i < BACKLOG; i++)
     {
       if (i != 0)
