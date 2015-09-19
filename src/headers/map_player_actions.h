@@ -4,7 +4,7 @@
 #define EXIT_FAILURE 0
 #define EXIT_SUCCESS 1
 
-
+#include "./chain_handlers.h"
 ///////////////////////////////////////////////////////
 // PROTOTYPES
 ///////////////////////////////////////////////////////
@@ -13,6 +13,8 @@ int map_player_down(s_client* client);
 int map_player_left(s_client* client);
 int map_player_right(s_client* client);
 int map_player_bomb(s_client* client);
+void send_map(s_client* client);
+void map_bomb_ignition(s_client* client);
 
 
 

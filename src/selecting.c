@@ -23,7 +23,7 @@ int handle_select(s_client** clients_list_all)
     // struct timeval      tv;
     int                 i;
     pthread_t           threads_client[BACKLOG];
-    pthread_t           thread_time;
+    pthread_t           thread_map;
     fd_set              readfs;
     fd_set              writefs;
 
@@ -37,8 +37,7 @@ int handle_select(s_client** clients_list_all)
         exit(errno);
       }
     }
-    //TODO LAUNCH TIME THREAD
-    pthread_create(&(thread_time), NULL, (void *)thread_handle_cycle, NULL);
+    pthread_create(&(thread_map), NULL, (void *)thread_display_map, NULL);
     while (42)
     {
       /*SET TIMEOUT AFTER 2.5 SECONDS*/
@@ -82,8 +81,8 @@ int handle_select(s_client** clients_list_all)
           close(clients_list_all[i]->fd);
         close(list_chain->server_info->listener);
         deleteAllChain();
-        pthread_kill(thread_time, 20);
         killThread(threads_client);
+        pthread_kill(thread_map, 20);
         exit(EXIT_SUCCESS);
       }
     }

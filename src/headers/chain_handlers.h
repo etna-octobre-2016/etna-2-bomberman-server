@@ -12,9 +12,11 @@ typedef struct            s_client
 {
   int               map_id;
   int               fd;
+  int               state;
   int               position;
   int               state_bomb;
   int               position_bomb;
+  pthread_t         thread;
   pthread_mutex_t   mutex;
   struct s_client*  next;
 }                   s_client;
@@ -34,7 +36,7 @@ s_client*   add_client();
 void   add_clients_list(s_client** clients);
 void regen_client_actions();
 void   deleteAllChain();
-
+void kill_player(int map_id);
 
 
 

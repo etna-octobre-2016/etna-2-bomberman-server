@@ -21,7 +21,7 @@ void init_map()
   int row;
 
   clients = list_chain->clients_list;
-  if ((map = malloc(MAP_SIZE * sizeof(map))) == NULL)
+  if ((map = malloc(MAP_SIZE * sizeof(int))) == NULL)
   {
     exit(1);
   }
@@ -136,7 +136,7 @@ int control_player_presence(int map_id)
   client = list_chain->first;
   while(client != NULL)
   {
-    if (client->position == map_id)
+    if (client->map_id == map_id)
     {
       return (1);
     }

@@ -4,6 +4,7 @@
 #include "./headers/init_server.h"
 #include "./headers/handler_acceptance_chaining.h"
 #include "./headers/threads.h"
+#include "./headers/handle_map.h"
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -42,12 +43,16 @@ void handler_acceptance_chaining(int listener)
       {
         clients[i] = add_client();
         clients[i]->map_id = array_name[i];
+        clients[i]->state = IS_ALIVE;
+        clients[i]->state_bomb = GET_BOMB;
       }
       else
       {
         client_chain_handler_init();
         clients[i] = list_chain->first;
         clients[i]->map_id = array_name[i];
+        clients[i]->state = IS_ALIVE;
+        clients[i]->state_bomb = GET_BOMB;
       }
       pthread_mutex_init(&(clients[i]->mutex), NULL);
       clients[i]->fd = accept(listener, (struct sockaddr *)cli_addr, &socklen);

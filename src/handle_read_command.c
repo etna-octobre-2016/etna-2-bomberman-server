@@ -1,7 +1,9 @@
 #include "../lib/my/src/headers/my.h"
 #include "./headers/selecting.h"
 #include "./headers/chain_handlers.h"
+#include "./headers/map_player_actions.h"
 #include "./headers/handle_read_command.h"
+#include "./headers/handle_map.h"
 #include <sys/select.h>
 #include <sys/time.h>
 #include <unistd.h>
@@ -17,6 +19,7 @@ t_listFunc structList[] =
     {"left", function_left},
     {"right", function_right},
     {"bomb", function_bomb},
+    {"update", function_update},
     {0,0}
   };
 
@@ -30,17 +33,27 @@ void* handle_read_command(s_client* client)
   read(client->fd, buffer_read, 20);
   //TODO Handle Error_handler
   my_printf("received : #%s#\n", buffer_read);
-  for (i = 0, function_founded = 0; structList[i].action != 0; i++)
+  if (client->state != IS_DEAD)
   {
-    if (my_strcmp(buffer_read, structList[i].action) == 0)
+    for (i = 0, function_founded = 0; structList[i].action != 0; i++)
     {
-      function_founded = 1;
-      structList[i].ptr(client);
+      if (my_strcmp(buffer_read, structList[i].action) == 0)
+      {
+        function_founded = 1;
+        structList[i].ptr(client);
+      }
+    }
+    if (function_founded == 0)
+    {
+      map_player_bomb(client);
+      send_map(client);
+      write(client->fd, "ko\n", my_strlen("ko\n"));
+      pthread_mutex_unlock(&(client->mutex));
     }
   }
-  if (function_founded == 0)
+  else
   {
-    write(client->fd, "ko\n", my_strlen("ko\n"));
+    write(client->fd, "dead\n", my_strlen("dead\n"));
     pthread_mutex_unlock(&(client->mutex));
   }
   free(buffer_read);
@@ -74,6 +87,13 @@ void function_right(s_client* client)
 void function_bomb(s_client* client)
 {
   my_printf("OK\n");
+  write(client->fd, "ok\n", my_strlen("ok\n"));
+  pthread_mutex_unlock(&(client->mutex));
+}
+void function_update(s_client* client)
+{
+  my_printf("OK\n");
+  send_map(client);
   write(client->fd, "ok\n", my_strlen("ok\n"));
   pthread_mutex_unlock(&(client->mutex));
 }

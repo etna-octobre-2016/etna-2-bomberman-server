@@ -2,6 +2,7 @@
 #include "./headers/chain_handlers.h"
 #include "./headers/handler_acceptance_chaining.h"
 #include "./headers/main.h"
+#include "./headers/handle_map.h"
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -23,6 +24,7 @@ void          client_chain_handler_init()
   {
     exit(-1);
   }
+  client->next = NULL;
   list_chain->first = client;
 }
 
@@ -31,8 +33,8 @@ s_client*     add_client()
   s_client*     client;
 
   client = malloc(sizeof(s_client));
-  client->next = NULL;
-  list_chain->first->next = client;
+  client->next = list_chain->first;
+  list_chain->first = client;
   return (client);
 }
 
@@ -41,26 +43,30 @@ void add_clients_list(s_client** clients)
     list_chain->clients_list = clients;
 }
 
-void regen_client_actions()
+void kill_player(int map_id)
 {
-  s_client* entity;
+  s_client* client;
 
-  entity = list_chain->first;
-  while(entity != NULL)
+  client = list_chain->first;
+  while(client != NULL)
   {
-    entity = entity->next;
+    if (client->map_id == map_id)
+    {
+      client->state = IS_DEAD;
+    }
+    client = client->next;
   }
 }
 
 void deleteAllChain()
 {
-  s_client* entity;
+  s_client* client;
 
   while (list_chain->first != NULL)
     {
-      entity = list_chain->first;
-      list_chain->first = entity->next;
-      free(entity);
+      client = list_chain->first;
+      list_chain->first = client->next;
+      free(client);
     }
   free(list_chain);
 }

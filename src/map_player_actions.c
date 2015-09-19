@@ -3,11 +3,15 @@
 #include "./headers/main.h"
 #include "./headers/handle_map.h"
 #include "./headers/map_player_actions.h"
+#include "./headers/threads.h"
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <math.h>
+#include <arpa/inet.h>
+#include <stdio.h>
+
 
 int map_player_up(s_client* client)
 {
@@ -99,13 +103,72 @@ int map_player_right(s_client* client)
 }
 int map_player_bomb(s_client* client)
 {
-  if (client->state_bomb == 0)
+  int return_error;
+
+  if (client->state_bomb == GET_BOMB)
   {
-    client->state_bomb = 1;
+    client->state_bomb = GET_NO_BOMB;
     client->position_bomb = client->position;
     map[client->position] = client->map_id + 1;
-    //TODO handle thread bomb
+    return_error = pthread_create(&(client->thread), NULL, thread_handle_bomb, (void *)client);
+      if (return_error != 0)
+      {
+        perror("pthread_create");
+      }
     return (1);
   }
   return (0);
+}
+void map_bomb_ignition(s_client* client)
+{
+  int u;
+
+  u = sqrt(MAP_SIZE);
+  //control star ignition
+  if (client->position_bomb == client->position)
+  {
+    kill_player(client->map_id);
+  }
+  map[client->position_bomb] = SYMBOL_VOID;
+  if (map[client->position_bomb + u] != SYMBOL_WALL_INDESTRUCTIBLE)
+  {
+    if (control_player_presence(map[client->position_bomb + u]) == 1)
+    {
+      kill_player(map[client->position_bomb + u]);
+    }
+    map[client->position_bomb + u] = SYMBOL_VOID;
+  }
+  if (map[client->position_bomb - u] != SYMBOL_WALL_INDESTRUCTIBLE)
+  {
+    if (control_player_presence(map[client->position_bomb - u]) == 1)
+    {
+      kill_player(map[client->position_bomb - u]);
+    }
+    map[client->position_bomb - u] = SYMBOL_VOID;
+  }
+  if (map[client->position_bomb + 1] != SYMBOL_WALL_INDESTRUCTIBLE)
+  {
+    if (control_player_presence(map[client->position_bomb + 1]) == 1)
+    {
+      kill_player(map[client->position_bomb + 1]);
+    }
+    map[client->position_bomb + 1] = SYMBOL_VOID;
+  }
+  if (map[client->position_bomb - 1] != SYMBOL_WALL_INDESTRUCTIBLE)
+  {
+    if (control_player_presence(map[client->position_bomb - 1]) == 1)
+    {
+      kill_player(map[client->position_bomb - 1]);
+    }
+    map[client->position_bomb - 1] = SYMBOL_VOID;
+  }
+}
+void send_map(s_client* client)
+{
+  int i;
+
+  for(i = 0; i < MAP_SIZE; i++)
+  {
+    write(client->fd, &map[i], sizeof(int));
+  }
 }

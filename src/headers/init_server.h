@@ -3,7 +3,7 @@
 
 #define PORT 4242
 #define BACKLOG 4
-#define CYCLE_TIME 50000
+#define CYCLE_TIME 3000000
 #define EXIT_FAILURE 0
 #define EXIT_SUCCESS 1
 #include <pthread.h>

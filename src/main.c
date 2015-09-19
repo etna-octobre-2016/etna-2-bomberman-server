@@ -17,8 +17,8 @@ int main()
   //TODO Handle map
   //PARSE SELECT + THREAD
   init_map();
-  free(map);
   handle_select(list_chain->clients_list);
   free(list_chain->clients_list);
+  free(map);
   return (0);
 }
