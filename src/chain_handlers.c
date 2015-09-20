@@ -22,7 +22,7 @@ void          client_chain_handler_init()
   client = malloc(sizeof(s_client));
   if ((list_chain == NULL) || (client == NULL))
   {
-    exit(-1);
+    exit(EXIT_FAILURE);
   }
   client->next = NULL;
   list_chain->first = client;
@@ -32,7 +32,10 @@ s_client*     add_client()
 {
   s_client*     client;
 
-  client = malloc(sizeof(s_client));
+  if((client = malloc(sizeof(s_client))) == NULL)
+  {
+    exit(EXIT_FAILURE);
+  }
   client->next = list_chain->first;
   list_chain->first = client;
   return (client);

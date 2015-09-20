@@ -31,9 +31,11 @@ void* handle_read_command(s_client* client)
   int           i;
   int           function_founded;
 
-  buffer_read = malloc(sizeof(char) * 20);
+  if((buffer_read = malloc(sizeof(char) * 20)) == NULL)
+  {
+    exit(EXIT_FAILURE);
+  }
   read(client->fd, buffer_read, 20);
-  //TODO Handle Error_handler
   my_printf("received : #%s#\n", buffer_read);
   // i = my_strlen(buffer_read);
   // buffer_read[i - 2] = '\0';

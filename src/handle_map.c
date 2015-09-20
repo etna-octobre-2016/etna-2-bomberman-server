@@ -9,10 +9,6 @@
 #include <errno.h>
 #include <math.h>
 
-//TODO Function Initialisation pinpoint player + bounderies
-//TODO Function handle action players
-
-
 void init_map()
 {
   s_client** clients;
@@ -23,7 +19,7 @@ void init_map()
   clients = list_chain->clients_list;
   if ((map = malloc(MAP_SIZE * sizeof(int))) == NULL)
   {
-    exit(1);
+    exit(EXIT_FAILURE);
   }
   u = sqrt(MAP_SIZE);
   //init border
@@ -48,7 +44,7 @@ void init_map()
   }
   //Write Border + Player spawn
   backboning_map();
-  //TODO create scenery
+  //Create scenery
   setting_map();
   for(i = 0; i < u; i++)
   {

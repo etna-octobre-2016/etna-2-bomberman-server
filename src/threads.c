@@ -28,16 +28,11 @@ void* thread_handle_bomb(void* data)
   my_printf("thread_bomb : OK\n");
   usleep(CYCLE_TIME);
   my_printf("thread_bomb : IGNITIONNNNN\n");
-  my_printf("thread_bomb : VOID\n");
   map[client->position_bomb] = SYMBOL_BOMB_IGNITION;
-  //TODO function clear all case +1 +1 +1 +1
   usleep(1000000);
+  my_printf("thread_bomb : VOID\n");
   map_bomb_ignition(client);
   client->state_bomb = GET_BOMB;
-  //TODO control player presence
-  //TODO control modificate SYMBOLE for 1 sec
-  //TODO idle all bomb stats
-  // action_map_energy_point();
   pthread_exit(NULL);
 }
 void thread_display_map()

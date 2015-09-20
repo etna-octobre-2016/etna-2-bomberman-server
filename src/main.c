@@ -14,8 +14,6 @@
 int main()
 {
   init_server();
-  //TODO Handle map
-  //PARSE SELECT + THREAD
   init_map();
   handle_select(list_chain->clients_list);
   free(list_chain->clients_list);

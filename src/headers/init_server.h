@@ -2,7 +2,7 @@
 #define SOFTWAR_INITSERVER_H
 
 #define PORT 4242
-#define BACKLOG 4
+#define BACKLOG 1
 #define CYCLE_TIME 3000000
 #define EXIT_FAILURE 0
 #define EXIT_SUCCESS 1

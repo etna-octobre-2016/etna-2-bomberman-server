@@ -24,7 +24,9 @@ void          init_server()
 
   on = 1;
   if ((proto = getprotobyname("TCP")) == NULL)
+  {
     exit(EXIT_FAILURE);
+  }
   if ((listener = socket(AF_INET, SOCK_STREAM, proto->p_proto)) == -1)
   {
     exit(EXIT_FAILURE);
@@ -40,7 +42,6 @@ void          init_server()
   }
   if ((listen(listener, BACKLOG - 1)) == -1)
   {
-    //TODO Get Error_handler
     my_printf("Connexion ko\n");
     exit(EXIT_FAILURE);
   }
@@ -48,7 +49,10 @@ void          init_server()
   //Function Handle acceptance + create chain per client
   handler_acceptance_chaining(listener);
   my_printf("Connexion ok\n");
-  server_info_create = malloc(sizeof(s_server));
+  if ((server_info_create = malloc(sizeof(s_server))) == NULL)
+  {
+    exit(EXIT_FAILURE);
+  };
   server_info_create->listener = listener;
   list_chain->server_info = server_info_create;
 }

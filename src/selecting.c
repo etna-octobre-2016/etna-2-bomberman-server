@@ -30,13 +30,13 @@ int handle_select(s_client** clients_list_all)
     //Announcing Starting Game
     for (i = 0; i < BACKLOG; i++)
     {
-      my_printf("i = %d", i);
       if (write(clients_list_all[i]->fd, "start", my_strlen("start")) < 0)
       {
         my_printf("send()");
         exit(errno);
       }
     }
+    //Debug display map /3sec
     pthread_create(&(thread_map), NULL, (void *)thread_display_map, NULL);
     while (42)
     {
