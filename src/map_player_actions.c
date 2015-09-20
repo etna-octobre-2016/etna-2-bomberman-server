@@ -2,6 +2,7 @@
 #include "./headers/chain_handlers.h"
 #include "./headers/main.h"
 #include "./headers/handle_map.h"
+#include "./headers/handle_read_command.h"
 #include "./headers/map_player_actions.h"
 #include "./headers/threads.h"
 #include <unistd.h>
@@ -166,9 +167,23 @@ void map_bomb_ignition(s_client* client)
 void send_map(s_client* client)
 {
   int i;
+  char* buffer_map;
+  char* buffer;
 
-  for(i = 0; i < MAP_SIZE; i++)
+  my_printf("RESULT : %d\n", client->map_id);
+  buffer = malloc(sizeof(buffer));
+  buffer = convIntChar(map[0]);
+  buffer_map = my_strconcat(buffer, " ");
+  for(i = 1; i < MAP_SIZE; i++)
   {
-    write(client->fd, &map[i], sizeof(int));
+    buffer_map = my_strconcat(buffer_map, convIntChar(map[i]));
+    if (i != (MAP_SIZE - 1))
+    {
+      buffer_map = my_strconcat(buffer_map, " ");
+    }
   }
+  my_printf("RESULT : %d\n", my_strlen(buffer_map));
+  write(client->fd, buffer_map, my_strlen(buffer_map));
+  free(buffer);
+  free(buffer_map);
 }

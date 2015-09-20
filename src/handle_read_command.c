@@ -9,6 +9,8 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdint.h>
+#include <arpa/inet.h>
 #include <errno.h>
 #include <pthread.h>
 
@@ -33,6 +35,8 @@ void* handle_read_command(s_client* client)
   read(client->fd, buffer_read, 20);
   //TODO Handle Error_handler
   my_printf("received : #%s#\n", buffer_read);
+  // i = my_strlen(buffer_read);
+  // buffer_read[i - 2] = '\0';
   if (client->state != IS_DEAD)
   {
     for (i = 0, function_founded = 0; structList[i].action != 0; i++)
@@ -45,8 +49,6 @@ void* handle_read_command(s_client* client)
     }
     if (function_founded == 0)
     {
-      map_player_bomb(client);
-      send_map(client);
       write(client->fd, "ko\n", my_strlen("ko\n"));
       pthread_mutex_unlock(&(client->mutex));
     }
@@ -62,38 +64,117 @@ void* handle_read_command(s_client* client)
 
 void function_up(s_client* client)
 {
+  int return_value;
+
   my_printf("OK\n");
-  write(client->fd, "ok\n", my_strlen("ok\n"));
+  return_value = map_player_up(client);
+  if (return_value)
+  {
+    write(client->fd, "ok\n", my_strlen("ok\n"));
+  }
+  else
+  {
+    write(client->fd, "ko\n", my_strlen("ko\n"));
+  }
   pthread_mutex_unlock(&(client->mutex));
 }
 void function_down(s_client* client)
 {
+  int return_value;
+
   my_printf("OK\n");
-  write(client->fd, "ok\n", my_strlen("ok\n"));
+  return_value = map_player_down(client);
+  if (return_value)
+  {
+    write(client->fd, "ok\n", my_strlen("ok\n"));
+  }
+  else
+  {
+    write(client->fd, "ko\n", my_strlen("ko\n"));
+  }
   pthread_mutex_unlock(&(client->mutex));
 }
 void function_left(s_client* client)
 {
+  int return_value;
+
   my_printf("OK\n");
-  write(client->fd, "ok\n", my_strlen("ok\n"));
+  return_value = map_player_left(client);
+  if (return_value)
+  {
+    write(client->fd, "ok\n", my_strlen("ok\n"));
+  }
+  else
+  {
+    write(client->fd, "ko\n", my_strlen("ko\n"));
+  }
   pthread_mutex_unlock(&(client->mutex));
 }
 void function_right(s_client* client)
 {
+  int return_value;
+
   my_printf("OK\n");
-  write(client->fd, "ok\n", my_strlen("ok\n"));
+  return_value = map_player_right(client);
+  if (return_value)
+  {
+    write(client->fd, "ok\n", my_strlen("ok\n"));
+  }
+  else
+  {
+    write(client->fd, "ko\n", my_strlen("ko\n"));
+  }
   pthread_mutex_unlock(&(client->mutex));
 }
 void function_bomb(s_client* client)
 {
+  int return_value;
+
   my_printf("OK\n");
-  write(client->fd, "ok\n", my_strlen("ok\n"));
+  return_value = map_player_bomb(client);
+  if (return_value)
+  {
+    write(client->fd, "ok\n", my_strlen("ok\n"));
+  }
+  else
+  {
+    write(client->fd, "ko\n", my_strlen("ko\n"));
+  }
   pthread_mutex_unlock(&(client->mutex));
 }
 void function_update(s_client* client)
 {
-  my_printf("OK\n");
   send_map(client);
-  write(client->fd, "ok\n", my_strlen("ok\n"));
   pthread_mutex_unlock(&(client->mutex));
+}
+
+char* convIntChar(int data)
+{
+  if (data == SYMBOL_VOID)
+    return("0");
+  if (data == SYMBOL_WALL_DESTRUCTIBLE)
+    return("11");
+  if (data == SYMBOL_WALL_INDESTRUCTIBLE)
+    return("10");
+  if (data == SYMBOL_BOMB_IDLE)
+    return("13");
+  if (data == SYMBOL_BOMB_IGNITION)
+    return("14");
+  if (data == 2)
+    return("2");
+  if (data == 3)
+    return("3");
+  if (data == 4)
+    return("4");
+  if (data == 5)
+    return("5");
+  if (data == 6)
+    return("6");
+  if (data == 7)
+    return("7");
+  if (data == 8)
+    return("8");
+  if (data == 9)
+    return("9");
+  return("ko");
 }

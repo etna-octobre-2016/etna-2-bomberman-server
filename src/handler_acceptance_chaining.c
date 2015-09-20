@@ -57,8 +57,6 @@ void handler_acceptance_chaining(int listener)
       pthread_mutex_init(&(clients[i]->mutex), NULL);
       clients[i]->fd = accept(listener, (struct sockaddr *)cli_addr, &socklen);
       my_printf("Host->name : %d\n", clients[i]->map_id);
-      // write(clients[i]->fd, clients[i]->map_id, sizeof(int));
-      write(clients[i]->fd, "\n", my_strlen("\n"));
     }
     list_chain->clients_list = clients;
   }

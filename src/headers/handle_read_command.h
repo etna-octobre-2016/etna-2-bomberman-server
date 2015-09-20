@@ -22,5 +22,6 @@ void function_left(s_client* client);
 void function_right(s_client* client);
 void function_bomb(s_client* client);
 void function_update(s_client* client);
+char* convIntChar(int data);
 
 #endif

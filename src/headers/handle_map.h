@@ -12,7 +12,7 @@
 #define SYMBOL_WALL_DESTRUCTIBLE 11
 #define SYMBOL_WALL_INDESTRUCTIBLE 10
 #define SYMBOL_BOMB_IDLE 13
-#define SYMBOL_BOMB_IGNITION 13
+#define SYMBOL_BOMB_IGNITION 14
 
 int* map;
 ///////////////////////////////////////////////////////
