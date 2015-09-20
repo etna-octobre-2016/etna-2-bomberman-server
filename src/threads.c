@@ -33,6 +33,7 @@ void* thread_handle_bomb(void* data)
   my_printf("thread_bomb : VOID\n");
   map_bomb_ignition(client);
   client->state_bomb = GET_BOMB;
+  client->position_bomb = SYMBOL_VOID;
   pthread_exit(NULL);
 }
 void thread_display_map()
