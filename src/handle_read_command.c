@@ -66,82 +66,82 @@ void* handle_read_command(s_client* client)
 
 void function_up(s_client* client)
 {
-  int return_value;
+  // int return_value;
 
   my_printf("OK\n");
-  return_value = map_player_up(client);
-  if (return_value)
-  {
-    write(client->fd, "ok\n", my_strlen("ok\n"));
-  }
-  else
-  {
-    write(client->fd, "ko\n", my_strlen("ko\n"));
-  }
+  map_player_up(client);
+  // if (return_value)
+  // {
+  //   write(client->fd, "ok\n", my_strlen("ok\n"));
+  // }
+  // else
+  // {
+  //   write(client->fd, "ko\n", my_strlen("ko\n"));
+  // }
   pthread_mutex_unlock(&(client->mutex));
 }
 void function_down(s_client* client)
 {
-  int return_value;
+  // int return_value;
 
   my_printf("OK\n");
-  return_value = map_player_down(client);
-  if (return_value)
-  {
-    write(client->fd, "ok\n", my_strlen("ok\n"));
-  }
-  else
-  {
-    write(client->fd, "ko\n", my_strlen("ko\n"));
-  }
+  map_player_down(client);
+  // if (return_value)
+  // {
+  //   write(client->fd, "ok\n", my_strlen("ok\n"));
+  // }
+  // else
+  // {
+  //   write(client->fd, "ko\n", my_strlen("ko\n"));
+  // }
   pthread_mutex_unlock(&(client->mutex));
 }
 void function_left(s_client* client)
 {
-  int return_value;
+  // int return_value;
 
   my_printf("OK\n");
-  return_value = map_player_left(client);
-  if (return_value)
-  {
-    write(client->fd, "ok\n", my_strlen("ok\n"));
-  }
-  else
-  {
-    write(client->fd, "ko\n", my_strlen("ko\n"));
-  }
+  map_player_left(client);
+  // if (return_value)
+  // {
+  //   write(client->fd, "ok\n", my_strlen("ok\n"));
+  // }
+  // else
+  // {
+  //   write(client->fd, "ko\n", my_strlen("ko\n"));
+  // }
   pthread_mutex_unlock(&(client->mutex));
 }
 void function_right(s_client* client)
 {
-  int return_value;
+  // int return_value;
 
   my_printf("OK\n");
-  return_value = map_player_right(client);
-  if (return_value)
-  {
-    write(client->fd, "ok\n", my_strlen("ok\n"));
-  }
-  else
-  {
-    write(client->fd, "ko\n", my_strlen("ko\n"));
-  }
+  map_player_right(client);
+  // if (return_value)
+  // {
+  //   write(client->fd, "ok\n", my_strlen("ok\n"));
+  // }
+  // else
+  // {
+  //   write(client->fd, "ko\n", my_strlen("ko\n"));
+  // }
   pthread_mutex_unlock(&(client->mutex));
 }
 void function_bomb(s_client* client)
 {
-  int return_value;
+  // int return_value;
 
   my_printf("OK\n");
-  return_value = map_player_bomb(client);
-  if (return_value)
-  {
-    write(client->fd, "ok\n", my_strlen("ok\n"));
-  }
-  else
-  {
-    write(client->fd, "ko\n", my_strlen("ko\n"));
-  }
+  map_player_bomb(client);
+  // if (return_value)
+  // {
+  //   write(client->fd, "ok\n", my_strlen("ok\n"));
+  // }
+  // else
+  // {
+  //   write(client->fd, "ko\n", my_strlen("ko\n"));
+  // }
   pthread_mutex_unlock(&(client->mutex));
 }
 void function_update(s_client* client)

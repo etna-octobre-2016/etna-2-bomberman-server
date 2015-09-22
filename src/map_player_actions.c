@@ -170,10 +170,10 @@ void send_map(s_client* client)
   char* buffer_map;
   char* buffer;
 
-  if ((buffer = malloc(sizeof(buffer))) == NULL)
-  {
-    exit(EXIT_FAILURE);
-  }
+  // if ((buffer = malloc(sizeof(buffer))) == NULL)
+  // {
+  //   exit(EXIT_FAILURE);
+  // }
   buffer = convIntChar(map[0]);
   buffer_map = my_strconcat(buffer, " ");
   for(i = 1; i < MAP_SIZE; i++)
@@ -186,6 +186,6 @@ void send_map(s_client* client)
   }
   // my_printf("RESULT : %d\n", my_strlen(buffer_map));
   write(client->fd, buffer_map, my_strlen(buffer_map));
-  free(buffer);
+  // free(buffer);
   free(buffer_map);
 }

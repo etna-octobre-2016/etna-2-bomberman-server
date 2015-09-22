@@ -20,7 +20,10 @@ char *my_strconcat(char* first_string, char* second_string)
 
   len_first_string = my_strlen(first_string);
   len_total = my_strlen(second_string) + len_first_string;
-  final_string = malloc(sizeof(char) * (len_total + 1));
+  if ((final_string = malloc(sizeof(char) * (len_total + 1))) == NULL)
+  {
+    exit(1);
+  }
   for (i = 0; i <= (len_first_string - 1); i++)
     final_string[i] = first_string[i];
   for (u = 0; i <= (len_total); i++, u++)

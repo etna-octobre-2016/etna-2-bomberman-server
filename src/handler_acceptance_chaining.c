@@ -45,6 +45,7 @@ void handler_acceptance_chaining(int listener)
         clients[i]->map_id = array_name[i];
         clients[i]->state = IS_ALIVE;
         clients[i]->state_bomb = GET_BOMB;
+        clients[i]->position_bomb = SYMBOL_VOID;
       }
       else
       {
@@ -53,6 +54,7 @@ void handler_acceptance_chaining(int listener)
         clients[i]->map_id = array_name[i];
         clients[i]->state = IS_ALIVE;
         clients[i]->state_bomb = GET_BOMB;
+        clients[i]->position_bomb = SYMBOL_VOID;
       }
       pthread_mutex_init(&(clients[i]->mutex), NULL);
       clients[i]->fd = accept(listener, (struct sockaddr *)cli_addr, &socklen);
