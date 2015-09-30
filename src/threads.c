@@ -1,24 +1,24 @@
 #include "../lib/my/src/headers/my.h"
-#include "./headers/main.h"
 #include "./headers/chain_handlers.h"
-#include "./headers/init_server.h"
-#include "./headers/handler_acceptance_chaining.h"
-#include "./headers/threads.h"
 #include "./headers/handle_map.h"
+#include "./headers/handler_acceptance_chaining.h"
+#include "./headers/init_server.h"
+#include "./headers/main.h"
 #include "./headers/map_player_actions.h"
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <sys/select.h>
+#include "./headers/threads.h"
 #include <arpa/inet.h>
-#include <netdb.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <pthread.h>
-#include <stdio.h>
-#include <time.h>
-#include <signal.h>
 #include <math.h>
+#include <netdb.h>
+#include <netinet/in.h>
+#include <pthread.h>
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/select.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <time.h>
+#include <unistd.h>
 
 void* thread_handle_bomb(void* data)
 {

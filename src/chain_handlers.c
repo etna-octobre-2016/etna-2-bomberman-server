@@ -1,18 +1,18 @@
 #include "../lib/my/src/headers/my.h"
 #include "./headers/chain_handlers.h"
+#include "./headers/handle_map.h"
 #include "./headers/handler_acceptance_chaining.h"
 #include "./headers/main.h"
-#include "./headers/handle_map.h"
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <sys/select.h>
 #include <arpa/inet.h>
-#include <netdb.h>
-#include <unistd.h>
-#include <string.h>
-#include <stdlib.h>
 #include <errno.h>
+#include <netdb.h>
+#include <netinet/in.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/select.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 void          client_chain_handler_init()
 {

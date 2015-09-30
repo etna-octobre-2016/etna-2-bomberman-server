@@ -1,13 +1,13 @@
 #include "../lib/my/src/headers/my.h"
 #include "./headers/chain_handlers.h"
-#include "./headers/main.h"
 #include "./headers/handle_map.h"
 #include "./headers/init_server.h"
-#include <unistd.h>
-#include <string.h>
-#include <stdlib.h>
+#include "./headers/main.h"
 #include <errno.h>
 #include <math.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 
 void init_map()
 {

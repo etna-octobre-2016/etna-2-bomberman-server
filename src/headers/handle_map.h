@@ -23,5 +23,4 @@ void backboning_map();
 void setting_map();
 int control_player_presence(int map_id);
 int control_wall_presence(int map_id);
-
 #endif

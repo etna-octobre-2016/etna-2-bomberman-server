@@ -1,8 +1,7 @@
 #ifndef SOFTWAR_ACCEPTANCE_H
 #define SOFTWAR_ACCEPTANCE_H
-#include <sys/socket.h>
 #include "./chain_handlers.h"
-
+#include <sys/socket.h>
 
 ///////////////////////////////////////////////////////
 // STRUCTURES
@@ -22,5 +21,4 @@ typedef struct            s_acceptance_data
 ///////////////////////////////////////////////////////
 
 void handler_acceptance_chaining(int listener);
-
 #endif

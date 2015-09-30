@@ -1,18 +1,18 @@
 #include "../lib/my/src/headers/my.h"
-#include "./headers/selecting.h"
 #include "./headers/chain_handlers.h"
-#include "./headers/map_player_actions.h"
-#include "./headers/handle_read_command.h"
 #include "./headers/handle_map.h"
-#include <sys/select.h>
-#include <sys/time.h>
-#include <unistd.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdint.h>
+#include "./headers/handle_read_command.h"
+#include "./headers/map_player_actions.h"
+#include "./headers/selecting.h"
 #include <arpa/inet.h>
 #include <errno.h>
 #include <pthread.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/select.h>
+#include <sys/time.h>
+#include <unistd.h>
 
 t_listFunc structList[] =
   {
@@ -36,9 +36,12 @@ void* handle_read_command(s_client* client)
     exit(EXIT_FAILURE);
   }
   read(client->fd, buffer_read, 20);
+  i = my_strlen(buffer_read);
+  if (buffer_read[i - 1] ==  '\n')
+  {
+    buffer_read[i - 2] = '\0';
+  }
   my_printf("received : #%s#\n", buffer_read);
-  // i = my_strlen(buffer_read);
-  // buffer_read[i - 2] = '\0';
   if (client->state != IS_DEAD)
   {
     for (i = 0, function_founded = 0; structList[i].action != 0; i++)
@@ -51,14 +54,19 @@ void* handle_read_command(s_client* client)
     }
     if (function_founded == 0)
     {
-      write(client->fd, "ko\n", my_strlen("ko\n"));
       pthread_mutex_unlock(&(client->mutex));
     }
   }
   else
   {
-    write(client->fd, "dead\n", my_strlen("dead\n"));
-    pthread_mutex_unlock(&(client->mutex));
+    if (my_strcmp(buffer_read, "update") == 0)
+    {
+      structList[5].ptr(client);
+    }
+    else
+    {
+      pthread_mutex_unlock(&(client->mutex));
+    }
   }
   free(buffer_read);
   pthread_exit(NULL);
@@ -66,82 +74,32 @@ void* handle_read_command(s_client* client)
 
 void function_up(s_client* client)
 {
-  // int return_value;
-
   my_printf("OK\n");
   map_player_up(client);
-  // if (return_value)
-  // {
-  //   write(client->fd, "ok\n", my_strlen("ok\n"));
-  // }
-  // else
-  // {
-  //   write(client->fd, "ko\n", my_strlen("ko\n"));
-  // }
   pthread_mutex_unlock(&(client->mutex));
 }
 void function_down(s_client* client)
 {
-  // int return_value;
-
   my_printf("OK\n");
   map_player_down(client);
-  // if (return_value)
-  // {
-  //   write(client->fd, "ok\n", my_strlen("ok\n"));
-  // }
-  // else
-  // {
-  //   write(client->fd, "ko\n", my_strlen("ko\n"));
-  // }
   pthread_mutex_unlock(&(client->mutex));
 }
 void function_left(s_client* client)
 {
-  // int return_value;
-
   my_printf("OK\n");
   map_player_left(client);
-  // if (return_value)
-  // {
-  //   write(client->fd, "ok\n", my_strlen("ok\n"));
-  // }
-  // else
-  // {
-  //   write(client->fd, "ko\n", my_strlen("ko\n"));
-  // }
   pthread_mutex_unlock(&(client->mutex));
 }
 void function_right(s_client* client)
 {
-  // int return_value;
-
   my_printf("OK\n");
   map_player_right(client);
-  // if (return_value)
-  // {
-  //   write(client->fd, "ok\n", my_strlen("ok\n"));
-  // }
-  // else
-  // {
-  //   write(client->fd, "ko\n", my_strlen("ko\n"));
-  // }
   pthread_mutex_unlock(&(client->mutex));
 }
 void function_bomb(s_client* client)
 {
-  // int return_value;
-
   my_printf("OK\n");
   map_player_bomb(client);
-  // if (return_value)
-  // {
-  //   write(client->fd, "ok\n", my_strlen("ok\n"));
-  // }
-  // else
-  // {
-  //   write(client->fd, "ko\n", my_strlen("ko\n"));
-  // }
   pthread_mutex_unlock(&(client->mutex));
 }
 void function_update(s_client* client)

@@ -1,17 +1,17 @@
 #include "../lib/my/src/headers/my.h"
 #include "./headers/chain_handlers.h"
-#include "./headers/main.h"
 #include "./headers/handle_map.h"
 #include "./headers/handle_read_command.h"
+#include "./headers/main.h"
 #include "./headers/map_player_actions.h"
 #include "./headers/threads.h"
-#include <unistd.h>
-#include <string.h>
-#include <stdlib.h>
+#include <arpa/inet.h>
 #include <errno.h>
 #include <math.h>
-#include <arpa/inet.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 
 
 int map_player_up(s_client* client)
@@ -170,10 +170,6 @@ void send_map(s_client* client)
   char* buffer_map;
   char* buffer;
 
-  // if ((buffer = malloc(sizeof(buffer))) == NULL)
-  // {
-  //   exit(EXIT_FAILURE);
-  // }
   buffer = convIntChar(map[0]);
   buffer_map = my_strconcat(buffer, " ");
   for(i = 1; i < MAP_SIZE; i++)
@@ -184,8 +180,6 @@ void send_map(s_client* client)
       buffer_map = my_strconcat(buffer_map, " ");
     }
   }
-  // my_printf("RESULT : %d\n", my_strlen(buffer_map));
   write(client->fd, buffer_map, my_strlen(buffer_map));
-  // free(buffer);
   free(buffer_map);
 }

@@ -1,16 +1,16 @@
 #include "../lib/my/src/headers/my.h"
-#include "./headers/selecting.h"
-#include "./headers/init_server.h"
-#include "./headers/threads.h"
 #include "./headers/handle_read_command.h"
-#include <sys/select.h>
-#include <sys/time.h>
-#include <unistd.h>
-#include <string.h>
-#include <stdlib.h>
+#include "./headers/init_server.h"
+#include "./headers/selecting.h"
+#include "./headers/threads.h"
 #include <errno.h>
 #include <pthread.h>
 #include <signal.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/select.h>
+#include <sys/time.h>
+#include <unistd.h>
 
 pthread_mutex_t  mutex_read_and_actions_client1 = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t  mutex_read_and_actions_client2 = PTHREAD_MUTEX_INITIALIZER;
@@ -81,7 +81,7 @@ int handle_select(s_client** clients_list_all)
           close(clients_list_all[i]->fd);
         close(list_chain->server_info->listener);
         deleteAllChain();
-        killThread(threads_client);
+        // killThread(threads_client);
         pthread_kill(thread_map, 20);
         exit(EXIT_SUCCESS);
       }
